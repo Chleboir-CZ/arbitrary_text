@@ -2,7 +2,7 @@ require_relative 'word'
 
 class AnalyzedText
 	def initialize(raw_string)
-		@words = parse_raw_string(raw_string)
+		@words = parse_raw_text(raw_string)
 		@word_probability_sum = 0
 
 		@words.each_value do |word|
@@ -24,9 +24,10 @@ class AnalyzedText
 	end
 
 	private
-		def parse_raw_string(raw_string)
+		def parse_raw_text(filename)
 			return_hash = {}
-			split_str = raw_string.split(" ")
+			raw_str = get_raw_str(filename)
+			split_str = raw_str.split(" ")
 			for word_str in split_str
 				if return_hash[word_str] == nil
 					word_obj = Word.new(word_str)
@@ -50,6 +51,14 @@ class AnalyzedText
 			return return_hash;
 		end
 
+		def get_raw_str(filename)
+			raw_str = ""
+			File.readlines(filename).each do |line|
+				raw_str += (" " + line)
+			end
+			return raw_str;
+		end
+
 		def get_first_word
 			rand_num = rand(1..@word_probability_sum)
 			i = 0
@@ -63,11 +72,7 @@ class AnalyzedText
 		end
 end
 
-
-raw_text = gets()
-if raw_text == nil
-	raise 'piču'
-end
-analyzed = AnalyzedText.new(raw_text)
+filename = gets().chomp
+analyzed = AnalyzedText.new(filename)
 puts(analyzed.get_markov_str(50))
 

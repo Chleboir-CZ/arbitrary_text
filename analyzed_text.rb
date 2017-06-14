@@ -41,14 +41,17 @@ class AnalyzedText
 					return_hash[word_str] = word_obj
 				end
 			end
-			# add next words
+			add_next_words(split_str, return_hash)
+			return return_hash;
+		end
+
+		def add_next_words(split_str, hash)
 			for word in split_str
-				index = split_str.index(word)
-				if split_str[index + 1] != nil
-					return_hash[split_str[index]].add_next_word(return_hash[split_str[index + 1]])
+				i = split_str.index(word) + 1 # index of next word
+				if split_str[i] != nil
+					hash[word].add_next_word(hash[split_str[i]])
 				end
 			end
-			return return_hash;
 		end
 
 		def get_raw_str(filename)

@@ -1,5 +1,7 @@
 require_relative 'word'
 
+SENTENCE_LENGTH = 10
+
 class AnalyzedText
 	def initialize(raw_string)
 		@words = parse_raw_text(raw_string)
@@ -11,16 +13,24 @@ class AnalyzedText
 	end
 
 	def get_markov_str(length)
-		word = get_first_word()
+		# TODO
+	end
+
+	def get_sentence
+		word = get_first_word
 		str = word.str
-		for x in 1..length
-			if (word = word.next) != nil
-				str = str + " " + word.str
-			else
+		i = 0
+		loop do
+			break if word.ends_sentence
+			word = word.next
+			i += 1
+			str = str + " " + word.str
+			if i == SENTENCE_LENGTH
+				str = str + "."
 				break
 			end
 		end
-		return str
+		return str.capitalize
 	end
 
 	private
@@ -42,7 +52,7 @@ class AnalyzedText
 				end
 			end
 			add_next_words(split_str, return_hash)
-			return return_hash;
+			return return_hash
 		end
 
 		def add_next_words(split_str, hash)
@@ -59,7 +69,7 @@ class AnalyzedText
 			File.readlines(filename).each do |line|
 				raw_str += (" " + line)
 			end
-			return raw_str;
+			return raw_str
 		end
 
 		def get_first_word
@@ -77,5 +87,4 @@ end
 
 filename = gets().chomp
 analyzed = AnalyzedText.new(filename)
-puts(analyzed.get_markov_str(50))
-
+puts analyzed.get_markov_str(20)

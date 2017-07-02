@@ -30,10 +30,10 @@ class Word
 	# gets the continuing word in a sentence
 	def next()
 		rand_num = rand(1..@next_probabilities_sum)
-		i = 0
+		i = 1
 		if @possible_next_words != nil
 			@possible_next_words.each_value do |word|
-				if rand_num >= i and rand_num <= i + word.probability
+				if rand_num >= i and rand_num < i + word.probability
 					return word
 				else
 					i += word.probability

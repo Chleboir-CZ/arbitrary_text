@@ -13,7 +13,16 @@ class AnalyzedText
 	end
 
 	def get_markov_str(length)
-		# TODO
+		word = get_first_word
+		str = ""
+		for x in 1..length
+			str = str + " " + word.str
+			word = word.next
+			if word == nil
+				word = get_first_word
+			end
+		end
+		return str
 	end
 
 	def get_sentence
@@ -56,10 +65,11 @@ class AnalyzedText
 		end
 
 		def add_next_words(split_str, hash)
-			for word in split_str
-				i = split_str.index(word) + 1 # index of next word
-				if split_str[i] != nil
-					hash[word].add_next_word(hash[split_str[i]])
+			for i in 0..split_str.size - 1
+				j = i + 1 # index of next word
+				puts(split_str[i]) 
+				if split_str[j] != nil
+					hash[split_str[i]].add_next_word(hash[split_str[j]])
 				end
 			end
 		end
@@ -87,4 +97,3 @@ end
 
 filename = gets().chomp
 analyzed = AnalyzedText.new(filename)
-puts analyzed.get_markov_str(20)

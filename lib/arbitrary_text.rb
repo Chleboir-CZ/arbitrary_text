@@ -1,8 +1,9 @@
-require_relative 'word'
+require "arbitrary_text/version"
+require_relative "word"
 
 SENTENCE_LENGTH = 10
 
-class AnalyzedText
+class ArbitraryText
 	def initialize(raw_string)
 		@words = parse_raw_text(raw_string)
 		@word_probability_sum = 0
@@ -12,7 +13,7 @@ class AnalyzedText
 		end
 	end
 
-	def get_markov_str(length)
+	def get_markov_chain(length)
 		word = get_first_word
 		str = ""
 		for x in 1..length
@@ -67,7 +68,7 @@ class AnalyzedText
 		def add_next_words(split_str, hash)
 			for i in 0..split_str.size - 1
 				j = i + 1 # index of next word
-				puts(split_str[i]) 
+				puts(split_str[i])
 				if split_str[j] != nil
 					hash[split_str[i]].add_next_word(hash[split_str[j]])
 				end
@@ -94,6 +95,3 @@ class AnalyzedText
 			end
 		end
 end
-
-filename = gets().chomp
-analyzed = AnalyzedText.new(filename)

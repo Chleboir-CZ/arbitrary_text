@@ -1,4 +1,4 @@
-require "arbitrary_text/version"
+require_relative "arbitrary_text/version"
 require_relative "word"
 
 SENTENCE_LENGTH = 10
@@ -16,11 +16,13 @@ class ArbitraryText
 	def get_markov_chain(length)
 		word = get_first_word
 		str = ""
-		for x in 1..length
-			str = str + " " + word.str
-			word = word.next
-			if word == nil
-				word = get_first_word
+		if word != nil
+			for x in 1..length
+				str = str + " " + word.str
+				word = word.next
+				if word == nil
+					word = get_first_word
+				end
 			end
 		end
 		return str
@@ -28,16 +30,19 @@ class ArbitraryText
 
 	def get_sentence
 		word = get_first_word
-		str = word.str
-		i = 0
-		loop do
-			break if word.ends_sentence
-			word = word.next
-			i += 1
-			str = str + " " + word.str
-			if i == SENTENCE_LENGTH
-				str = str + "."
-				break
+		str = ""
+		if word != nil
+			str = str + word.str
+			i = 0
+			loop do
+				break if word.ends_sentence
+				word = word.next
+				i += 1
+				str = str + " " + word.str
+				if i == SENTENCE_LENGTH
+					str = str + "."
+					break
+				end
 			end
 		end
 		return str.capitalize
@@ -68,7 +73,6 @@ class ArbitraryText
 		def add_next_words(split_str, hash)
 			for i in 0..split_str.size - 1
 				j = i + 1 # index of next word
-				puts(split_str[i])
 				if split_str[j] != nil
 					hash[split_str[i]].add_next_word(hash[split_str[j]])
 				end
@@ -93,5 +97,6 @@ class ArbitraryText
 					i += word.probability
 				end
 			end
+			return nil
 		end
 end

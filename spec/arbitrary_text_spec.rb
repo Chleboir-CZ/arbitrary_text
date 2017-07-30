@@ -17,7 +17,7 @@ describe ArbitraryText do
 	end
 
 	describe "#get_markov_chain" do
-		it "returns a string of correct length" do
+		it "returns a chain of correct length" do
 			@arb_array.each do |arb|
 				r = rand(1..400)
 				chain = arb.get_markov_chain(r)
@@ -26,6 +26,20 @@ describe ArbitraryText do
 			r = rand(1..400)
 			chain = @arb_empty.get_markov_chain(r)
 			expect(chain.split.size).to eq(0)
+		end
+
+		it "returns a correctly formatted chain" do
+			@arb_array.each do |arb|
+				r = rand(1..400)
+				array = arb.get_markov_chain(r).split(" ")
+				expect(array[0]).to eq(array[0].capitalize)
+				for x in 0..array.size - 2
+					if array[x][-1] == "."
+						expect(array[x + 1]).to eq(array[x + 1].capitalize)
+					end
+				end
+				expect(array[-1][-1]).to eq(".")
+			end
 		end
 	end
 

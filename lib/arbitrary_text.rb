@@ -25,6 +25,7 @@ class ArbitraryText
 				end
 			end
 		end
+		str = format_sentences(str)
 		return str
 	end
 
@@ -98,5 +99,22 @@ class ArbitraryText
 				end
 			end
 			return nil
+		end
+
+		def format_sentences(markov_ch)
+			if markov_ch != ""
+				array = markov_ch.split(" ")
+				array[0].capitalize!
+				for x in 0..array.length - 2
+					if array[x][-1] == "."
+						array[x + 1].capitalize!
+					end
+				end
+				ret_chain = array.join(" ")
+				ret_chain << "."
+				return ret_chain
+			else
+				return markov_ch
+			end
 		end
 end

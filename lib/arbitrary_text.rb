@@ -54,21 +54,19 @@ class ArbitraryText
 			return_hash = {}
 			raw_str = get_raw_str(filename)
 			split_str = raw_str.split(" ")
-			for word_str in split_str
-				if return_hash[word_str] == nil
-					word_obj = Word.new(word_str)
-					for word in split_str
-						if word == word_str
-							# increase probability of the word
-							word_obj.inc_prob
-						end
-					end
-					word_obj.dec_prob
-					return_hash[word_str] = word_obj
-				end
-			end
+			get_first_word_probabilities(split_str, return_hash)
 			add_next_words(split_str, return_hash)
 			return return_hash
+		end
+
+		def get_first_word_probabilities(split_str, return_hash)
+			for word_str in split_str
+				if return_hash[word_str] == nil
+					return_hash[word_str] = Word.new(word_str)
+				else
+					return_hash[word_str].inc_prob
+				end
+			end
 		end
 
 		def add_next_words(split_str, hash)

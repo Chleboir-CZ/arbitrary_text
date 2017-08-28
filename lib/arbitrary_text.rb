@@ -1,4 +1,3 @@
-require_relative "arbitrary_text/version"
 require_relative "word"
 
 SENTENCE_LENGTH = 10
@@ -9,7 +8,7 @@ class ArbitraryText
 		@word_probability_sum = 0
 
 		@words.each_value do |word|
-			@word_probability_sum += word.probability
+			@word_probability_sum += word.first_word_probability
 		end
 	end
 
@@ -64,7 +63,7 @@ class ArbitraryText
 				if return_hash[word_str] == nil
 					return_hash[word_str] = Word.new(word_str)
 				else
-					return_hash[word_str].inc_prob
+					return_hash[word_str].inc_first_prob
 				end
 			end
 		end
@@ -90,10 +89,10 @@ class ArbitraryText
 			rand_num = rand(1..@word_probability_sum)
 			i = 0
 			@words.each_value do |word|
-				if rand_num >= i and rand_num <= i + word.probability
+				if rand_num >= i and rand_num <= i + word.first_word_probability
 					return word
 				else
-					i += word.probability
+					i += word.first_word_probability
 				end
 			end
 			return nil
